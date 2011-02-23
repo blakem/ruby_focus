@@ -22,6 +22,11 @@ class Person < ActiveRecord::Base
     end      
   end
   
+  def self.find_by_names_starting_with(term)
+    Person.all(:conditions => ["first_name LIKE :term or last_name LIKE :term", {:term => term +'%'}],
+               :order => 'last_name ASC')
+  end
+  
   def addresses
     "Bob"
   end

@@ -48,4 +48,19 @@ describe Person do
   it "should have addresses" do
     true    
   end
+  
+  it "makes a person from a factor" do
+    p = Factory(:person)
+    p.should_not be_nil
+    p.should be_kind_of(Person)
+  end
+  
+  it "should find people by partial name match" do
+    jona = Factory(:person, :first_name => 'Jona', :last_name => 'Smith')
+    peter = Factory(:person, :first_name => 'Peter', :last_name => 'Jones')
+    bob = Factory(:person, :first_name => 'Bob', :last_name => 'Smith')
+
+    Person.all.should == [jona, peter, bob]
+    Person.find_by_names_starting_with("Jon").should == [peter, jona]
+  end
 end
