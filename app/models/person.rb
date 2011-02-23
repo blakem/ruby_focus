@@ -23,5 +23,9 @@ class Person < ActiveRecord::Base
       "#{first_name} #{middle_name} #{last_name}"
     end      
   end
+  
+  def addresses
+    "Bob"
+  end
 
 end
