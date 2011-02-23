@@ -6,21 +6,19 @@ describe Person do
     @valid = { :first_name => "Blake", :middle_name => "David", :last_name => "Mills" }
   end
 
-  it "should require a first_name" do
-    person = Person.new(@valid.merge({ :first_name => "" }))
-    person.should_not be_valid
-    person.errors[:first_name].should_not be_nil
-  end
+  describe "Validations" do
+    [:first_name, :last_name].each do |attr|
+      it "should require a #{attr}" do
+        person = Person.new(@valid.merge({ attr => "" }))
+        person.should_not be_valid
+        person.errors[attr].should_not be_nil
+      end
+    end
   
-  it "should require a last_name" do
-    person = Person.new(@valid.merge({ :last_name => "" }))
-    person.should_not be_valid
-    person.errors[:last_name].should_not be_nil
-  end
-
-  it "should not require a middle_name" do
-    person = Person.new(@valid.merge({ :middle_name => "" }))
-    person.should be_valid
+    it "should not require a middle_name" do
+      person = Person.new(@valid.merge({ :middle_name => "" }))
+      person.should be_valid
+    end
   end
 
   it "should construct a full name from first and last" do

@@ -9,22 +9,14 @@ describe Address do
                  :country => "America" }
     end
 
-    it "should require a street" do
-      address = Address.new(@valid.merge({ :street => "" }))
-      address.should_not be_valid
-      address.errors[:street].should_not be_blank
-    end
-
-    it "should require a city" do
-      address = Address.new(@valid.merge({ :city => "" }))
-      address.should_not be_valid
-      address.errors[:city].should_not be_blank
-    end
-
-    it "should require a zip" do
-      address = Address.new(@valid.merge({ :zip => "" }))
-      address.should_not be_valid
-      address.errors[:zip].should_not be_blank
+    describe "Validations" do
+      [:street, :city, :zip].each do |attr|
+        it "should require a #{attr}" do
+          person = Person.new(@valid.merge({ attr => "" }))
+          person.should_not be_valid
+          person.errors[attr].should_not be_nil
+        end
+      end
     end
 
     it "should not require a country and default to USA" do
