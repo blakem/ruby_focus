@@ -40,16 +40,7 @@ describe Person do
     new_person.middle_name.should == "David"    
   end
   
-  it "should respond to addresses" do
-    person = Person.new(@valid)
-    person.should respond_to(:addresses)
-  end
-  
-  it "should have addresses" do
-    true    
-  end
-  
-  it "makes a person from a factor" do
+  it "makes a person from a factory" do
     p = Factory(:person)
     p.should_not be_nil
     p.should be_kind_of(Person)
@@ -60,7 +51,32 @@ describe Person do
     peter = Factory(:person, :first_name => 'Peter', :last_name => 'Jones')
     bob = Factory(:person, :first_name => 'Bob', :last_name => 'Smith')
 
-    Person.all.should == [jona, peter, bob]
-    Person.find_by_names_starting_with("Jon").should == [peter, jona]
+    Person.all.should include(jona, peter, bob)
+    Person.find_by_names_starting_with("Jon").should include(peter, jona)
+    Person.find_by_names_starting_with("Jon").should_not include(bob)
+  end
+  
+  describe "Associations" do
+    
+    it "should respond to addresses" do
+      Person.new.should respond_to(:addresses)
+    end
+
+    it "should have addresses" do
+      addr = Factory(:address)
+      addr.person.should_not be_nil
+      p = addr.person
+      p.addresses.should == [addr]
+    end
+    
+    it "has messages" do
+      Person.new.should respond_to(:messages)
+    end
+    
+    it "can retrieve messages" do
+      msg = Factory(:message)
+      p = msg.recipient
+      p.messages.should == [msg]
+    end
   end
 end

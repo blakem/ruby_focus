@@ -10,16 +10,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110223015847) do
+ActiveRecord::Schema.define(:version => 20110223203908) do
 
   create_table "addresses", :force => true do |t|
     t.string   "street"
     t.string   "city"
     t.string   "zip"
     t.string   "country"
+    t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "messages", :force => true do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.string   "subject"
+    t.text     "body"
+    t.datetime "read_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["recipient_id"], :name => "index_messages_on_recipient_id"
+  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
 
   create_table "people", :force => true do |t|
     t.string   "first_name"

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110219015317
+# Schema version: 20110223203908
 #
 # Table name: people
 #
@@ -13,6 +13,9 @@
 
 class Person < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
+
+  has_many :messages, :foreign_key => 'recipient_id'
+  has_many :addresses
 
   scope :find_by_names_starting_with, lambda { |term|
     {
@@ -28,9 +31,4 @@ class Person < ActiveRecord::Base
       "#{first_name} #{middle_name} #{last_name}"
     end      
   end
-  
-  def addresses
-    "Bob"
-  end
-
 end
